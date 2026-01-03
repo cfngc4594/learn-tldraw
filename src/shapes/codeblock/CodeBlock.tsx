@@ -1,8 +1,16 @@
 import { Editor } from "@monaco-editor/react";
+import { type Monaco } from "@monaco-editor/react";
 import { useEffect, useRef } from "react";
 import { HTMLContainer, useEditor, useValue } from "tldraw";
 import { type editor } from "monaco-editor";
 import { TLCodeBlockShape } from "./TLCodeBlockShape";
+import { shikiToMonaco } from "@shikijs/monaco";
+import { createHighlighter } from "shiki";
+
+const highlighterPromise = createHighlighter({
+  themes: ["vitesse-light", "vitesse-dark"],
+  langs: ["javascript", "typescript"],
+});
 
 export function CodeBlock({
   shape,
@@ -18,6 +26,12 @@ export function CodeBlock({
     [editor, shape.id]
   );
 
+  const handleBeforeMount = async (monaco: Monaco) => {
+    const highlighter = await highlighterPromise;
+    shikiToMonaco(highlighter, monaco);
+    monaco.editor.setTheme("vitesse-dark");
+  };
+
   const handleEditorDidMount = useAutoFocus(isEditing);
 
   return (
@@ -29,7 +43,7 @@ export function CodeBlock({
       }}
     >
       <Editor
-        theme="vs-dark"
+        theme="vitesse-dark"
         value={shape.props.code}
         language={shape.props.codeLanguage}
         options={{
@@ -37,6 +51,7 @@ export function CodeBlock({
           scrollBeyondLastLine: false,
         }}
         className="size-full"
+        beforeMount={handleBeforeMount}
         onMount={handleEditorDidMount}
       />
     </HTMLContainer>
