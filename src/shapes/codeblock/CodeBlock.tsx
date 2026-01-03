@@ -29,7 +29,7 @@ export function CodeBlock({
   const handleBeforeMount = async (monaco: Monaco) => {
     const highlighter = await highlighterPromise;
     shikiToMonaco(highlighter, monaco);
-    monaco.editor.setTheme("vitesse-dark");
+    monaco.editor.setTheme(shape.props.codeTheme);
   };
 
   const handleEditorDidMount = useAutoFocus(isEditing);
@@ -43,7 +43,7 @@ export function CodeBlock({
       }}
     >
       <Editor
-        theme="vitesse-dark"
+        theme={shape.props.codeTheme}
         value={shape.props.code}
         language={shape.props.codeLanguage}
         options={{

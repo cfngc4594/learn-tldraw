@@ -4,7 +4,7 @@ import {
   useEditor,
   useRelevantStyles,
 } from "tldraw";
-import { CodeBlockLanguageStyle } from "./CodeBlockStyles";
+import { CodeBlockLanguageStyle, CodeBlockThemeStyle } from "./CodeBlockStyles";
 import {
   Select,
   SelectContent,
@@ -23,6 +23,7 @@ export function StylePanelCodeLanguagePicker() {
   if (!styles) return null;
 
   const language = styles.get(CodeBlockLanguageStyle);
+  const theme = styles.get(CodeBlockThemeStyle);
 
   return (
     <DefaultStylePanel>
@@ -39,7 +40,7 @@ export function StylePanelCodeLanguagePicker() {
             );
           }}
         >
-          <SelectTrigger className="ml-3 mb-2">
+          <SelectTrigger className="ml-3 mb-2 w-[124px]">
             <SelectValue placeholder="Select language" />
           </SelectTrigger>
           <SelectContent>
@@ -49,6 +50,25 @@ export function StylePanelCodeLanguagePicker() {
             <SelectItem value="javascript">javascript</SelectItem>
             <SelectItem value="typescript">typescript</SelectItem>
             <SelectItem value="python">python</SelectItem>
+          </SelectContent>
+        </Select>
+      )}
+      {theme !== undefined && (
+        <Select
+          value={theme.type === "mixed" ? "" : theme.value}
+          onValueChange={(value) => {
+            editor.markHistoryStoppingPoint();
+            const validatedValue = CodeBlockThemeStyle.validate(value);
+            editor.setStyleForSelectedShapes(CodeBlockThemeStyle, validatedValue);
+          }}
+        >
+          <SelectTrigger className="ml-3 mb-2 w-[124px]">
+            <SelectValue placeholder="Select theme" />
+          </SelectTrigger>
+          <SelectContent>
+            {theme.type === "mixed" && <SelectItem value="">Mixed</SelectItem>}
+            <SelectItem value="vitesse-light">vitesse-light</SelectItem>
+            <SelectItem value="vitesse-dark">vitesse-dark</SelectItem>
           </SelectContent>
         </Select>
       )}
