@@ -1,6 +1,7 @@
 import { BaseBoxShapeUtil, Geometry2d, Rectangle2d } from "tldraw";
 import { CodeBlockShapeProps, TLCodeBlockShape } from "./TLCodeBlockShape";
 import { CodeBlock } from "./CodeBlock";
+import { CodeBlockLanguageStyle } from "./CodeBlockStyles";
 
 export class CodeBlockShapeUtil extends BaseBoxShapeUtil<TLCodeBlockShape> {
   static override type = "codeblock" as const;
@@ -15,7 +16,7 @@ export class CodeBlockShapeUtil extends BaseBoxShapeUtil<TLCodeBlockShape> {
     return {
       w: 512 + 32,
       h: 512 + 32,
-      codeLanguage: "javascript",
+      codeLanguage: CodeBlockLanguageStyle.defaultValue,
       code: "",
     };
   }

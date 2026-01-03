@@ -14,6 +14,7 @@ import {
   useIsToolSelected,
   useTools,
 } from "tldraw";
+import { StylePanelCodeLanguagePicker } from "@/shapes/codeblock/StylePanelCodeLanguagePicker";
 import "tldraw/tldraw.css";
 
 const uiOverrides: TLUiOverrides = {
@@ -62,16 +63,17 @@ const components: TLComponents = {
       </DefaultKeyboardShortcutsDialog>
     );
   },
+  StylePanel: StylePanelCodeLanguagePicker,
 };
 
-const shapaUtils = [CodeBlockShapeUtil];
+const shapeUtils = [CodeBlockShapeUtil];
 const tools = [CodeBlockShapeTool];
 
 export default function Page() {
   return (
     <div className="fixed inset-0">
       <Tldraw
-        shapeUtils={shapaUtils}
+        shapeUtils={shapeUtils}
         tools={tools}
         overrides={uiOverrides}
         components={components}
